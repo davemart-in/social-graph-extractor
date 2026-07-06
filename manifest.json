@@ -5,7 +5,9 @@
   "description": "Scrape your own social connections into a unified JSON graph. Personal use only.",
   "permissions": ["storage", "downloads", "scripting", "activeTab"],
   "host_permissions": [
-    "https://www.linkedin.com/*"
+    "https://www.linkedin.com/*",
+    "https://twitter.com/*",
+    "https://x.com/*"
   ],
   "background": {
     "service_worker": "src/background/service-worker.js",
@@ -17,11 +19,16 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://www.linkedin.com/*"],
+      "matches": [
+        "https://www.linkedin.com/*",
+        "https://twitter.com/*",
+        "https://x.com/*"
+      ],
       "js": [
         "src/content/shared/scroll.js",
         "src/content/shared/adapter.js",
-        "src/content/linkedin.js"
+        "src/content/linkedin.js",
+        "src/content/twitter.js"
       ],
       "run_at": "document_idle"
     }
