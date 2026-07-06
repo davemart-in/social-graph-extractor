@@ -1,62 +1,57 @@
-// Shared auto-scroll / "load more" helper for lazy-loaded lists.
+// Shared scroll-and-collect helper for virtualized / lazy-loaded lists.
 // Classic content script — attaches to a shared window.SGE namespace
 // (content scripts can't use ES module imports).
 
 window.SGE = window.SGE || {};
 
-/** Sleep helper. */
 window.SGE.sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 /**
- * Scroll to the bottom repeatedly until the page height stops growing,
- * clicking any "show more" style button in between. Handles both infinite
- * scroll and click-to-load pagination.
+ * Drive a virtualized or infinite-scroll list to completion, harvesting rows
+ * on every step so they're captured before the list unmounts them.
  *
  * @param {object} opts
- * @param {() => number} opts.countItems  returns current item count (used to detect growth)
- * @param {string[]} [opts.loadMoreSelectors]  buttons to click to load more
- * @param {number} [opts.stableRounds=3]  stop after this many rounds with no growth
- * @param {number} [opts.maxRounds=200]   hard safety cap
- * @param {number} [opts.delayMs=800]     wait between scrolls (gentle on rate limits)
- * @param {(n:number)=>void} [opts.onProgress]
+ * @param {(map: Map) => void} opts.harvest  extract current DOM rows into `map`
+ * @param {() => (Element|null)} [opts.lastNode]  node to scrollIntoView to load more
+ * @param {() => void} [opts.clickLoadMore]  click any "show more" button
+ * @param {(size:number)=>void} [opts.onProgress]
+ * @param {number} [opts.stableRounds=5]  stop after this many rounds with no growth
+ * @param {number} [opts.maxRounds=600]   hard safety cap
+ * @param {number} [opts.delay=650]       wait between steps (gentle on rate limits)
+ * @returns {Promise<Map>} the accumulated map the caller's `harvest` filled
  */
-window.SGE.autoScroll = async function autoScroll(opts) {
-  const {
-    countItems,
-    loadMoreSelectors = [],
-    stableRounds = 3,
-    maxRounds = 200,
-    delayMs = 800,
-    onProgress,
-  } = opts;
-
+window.SGE.scrollCollect = async function scrollCollect({
+  harvest,
+  lastNode,
+  clickLoadMore,
+  onProgress,
+  stableRounds = 5,
+  maxRounds = 600,
+  delay = 650,
+}) {
+  const map = new Map();
   let stable = 0;
-  let lastCount = countItems ? countItems() : 0;
 
   for (let round = 0; round < maxRounds; round++) {
-    window.scrollTo(0, document.body.scrollHeight);
-    await window.SGE.sleep(delayMs);
+    harvest(map);
+    const before = map.size;
 
-    // Click any visible "load more" button.
-    for (const sel of loadMoreSelectors) {
-      const btn = document.querySelector(sel);
-      if (btn && btn.offsetParent !== null && !btn.disabled) {
-        btn.click();
-        await window.SGE.sleep(delayMs);
-      }
-    }
+    const node = lastNode ? lastNode() : null;
+    if (node) node.scrollIntoView({ block: "end", behavior: "auto" });
+    window.scrollBy(0, 1000);
+    if (clickLoadMore) clickLoadMore();
 
-    const count = countItems ? countItems() : 0;
-    if (onProgress) onProgress(count);
+    await window.SGE.sleep(delay);
+    harvest(map);
+    if (onProgress) onProgress(map.size);
 
-    if (count <= lastCount) {
-      stable++;
-      if (stable >= stableRounds) break;
+    if (map.size <= before) {
+      if (++stable >= stableRounds) break;
     } else {
       stable = 0;
-      lastCount = count;
     }
   }
 
-  return lastCount;
+  harvest(map); // final sweep
+  return map;
 };
