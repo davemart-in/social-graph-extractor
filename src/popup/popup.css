@@ -1,0 +1,60 @@
+:root {
+  --bg: #ffffff;
+  --fg: #1a1a1a;
+  --muted: #6b7280;
+  --accent: #0a66c2; /* LinkedIn-ish blue */
+  --border: #e5e7eb;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  width: 320px;
+  margin: 0;
+  padding: 16px;
+  font: 14px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+h1 { font-size: 15px; margin: 0; }
+
+.badge {
+  font-size: 11px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.counts { margin-bottom: 12px; }
+
+.stat { display: flex; align-items: baseline; gap: 6px; }
+.stat .num { font-size: 22px; font-weight: 700; }
+.stat .label { color: var(--muted); }
+
+.actions { display: flex; flex-direction: column; gap: 8px; }
+
+button {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: #f9fafb;
+  color: var(--fg);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+button:hover:not(:disabled) { background: #f3f4f6; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+#open-graph { border-color: var(--accent); color: var(--accent); background: #fff; }
+
+.hint { color: var(--muted); font-size: 12px; margin: 12px 0 0; }

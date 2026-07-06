@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Social Graph</title>
+    <link rel="stylesheet" href="graph.css" />
+  </head>
+  <body>
+    <aside id="sidebar">
+      <h1>Social Graph</h1>
+      <fieldset id="toggles">
+        <legend>Networks</legend>
+        <label><input type="checkbox" value="linkedin" checked /> LinkedIn</label>
+        <label><input type="checkbox" value="twitter" checked /> Twitter/X</label>
+        <label><input type="checkbox" value="facebook" checked /> Facebook</label>
+      </fieldset>
+      <div id="details" class="details">Select a node to see details.</div>
+    </aside>
+    <main id="cy"></main>
+
+    <!-- Bundled locally; MV3 CSP blocks remote scripts. -->
+    <script src="../../vendor/cytoscape.min.js"></script>
+    <script src="graph.js"></script>
+  </body>
+</html>

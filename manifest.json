@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Social Graph Extractor",
+  "version": "0.1.0",
+  "description": "Scrape your own social connections into a unified JSON graph. Personal use only.",
+  "permissions": ["storage", "downloads", "scripting", "activeTab"],
+  "host_permissions": [
+    "https://www.linkedin.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background/service-worker.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Social Graph Extractor",
+    "default_popup": "src/popup/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.linkedin.com/*"],
+      "js": ["src/content/linkedin.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/graph/graph.html", "src/review/review.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

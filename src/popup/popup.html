@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Social Graph Extractor</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Social Graph Extractor</h1>
+      <span class="badge">v0.1.0 · Phase 0</span>
+    </header>
+
+    <section class="counts" id="counts">
+      <div class="stat"><span class="num" id="total">0</span><span class="label">people</span></div>
+    </section>
+
+    <section class="actions">
+      <button id="scrape" disabled>Scrape this page</button>
+      <button id="open-graph">Open graph</button>
+      <button id="export" disabled>Export JSON</button>
+    </section>
+
+    <p class="hint">Scaffold only — scraping, storage, and export arrive in Phase 1.</p>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

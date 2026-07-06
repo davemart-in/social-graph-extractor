@@ -1,0 +1,9 @@
+# Scraped / exported social graph data — NEVER commit (contains real personal data)
+social-graph*.json
+*.export.json
+/data/
+/exports/
+
+# Tooling
+node_modules/
+.DS_Store
