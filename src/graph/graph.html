@@ -9,18 +9,53 @@
   <body>
     <aside id="sidebar">
       <h1>Social Graph</h1>
+
       <fieldset id="toggles">
         <legend>Networks</legend>
-        <label><input type="checkbox" value="linkedin" checked /> LinkedIn</label>
-        <label><input type="checkbox" value="twitter" checked /> Twitter/X</label>
-        <label><input type="checkbox" value="facebook" checked /> Facebook</label>
+        <label>
+          <input type="checkbox" value="linkedin" checked />
+          <span class="swatch" data-net="linkedin"></span>
+          LinkedIn <span class="count" data-count="linkedin">0</span>
+        </label>
+        <label>
+          <input type="checkbox" value="twitter" checked />
+          <span class="swatch" data-net="twitter"></span>
+          Twitter/X <span class="count" data-count="twitter">0</span>
+        </label>
+        <label>
+          <input type="checkbox" value="facebook" checked />
+          <span class="swatch" data-net="facebook"></span>
+          Facebook <span class="count" data-count="facebook">0</span>
+        </label>
       </fieldset>
+
+      <div class="controls">
+        <button id="relayout">Re-layout</button>
+        <button id="export">Export JSON</button>
+      </div>
+      <p class="legend-note">
+        Grouped by the year you first connected (earliest across networks).
+        Pie slices show which networks a person is on; a purple ring marks
+        someone linked across more than one network.
+      </p>
+
       <div id="details" class="details">Select a node to see details.</div>
     </aside>
-    <main id="cy"></main>
+
+    <main id="canvas">
+      <div id="cy"></div>
+      <div class="hint-bar">Scroll to zoom · drag to pan · click a node for details</div>
+      <div id="empty" class="empty" hidden>
+        <p>No people yet.</p>
+        <p class="muted">
+          Open the extension popup and check the people count. If it's 0, scrape
+          a network first (LinkedIn: My Network → Connections → Scrape). Then reopen this page.
+        </p>
+      </div>
+    </main>
 
     <!-- Bundled locally; MV3 CSP blocks remote scripts. -->
     <script src="../../vendor/cytoscape.min.js"></script>
-    <script src="graph.js"></script>
+    <script type="module" src="graph.js"></script>
   </body>
 </html>
