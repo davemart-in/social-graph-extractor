@@ -9,21 +9,25 @@
   <body>
     <header>
       <h1>Social Graph Extractor</h1>
-      <span class="badge">v0.1.0 · Phase 0</span>
+      <span class="badge">v0.1.0 · Phase 1</span>
     </header>
 
     <section class="counts" id="counts">
       <div class="stat"><span class="num" id="total">0</span><span class="label">people</span></div>
+      <div class="by-network" id="by-network"></div>
     </section>
 
     <section class="actions">
-      <button id="scrape" disabled>Scrape this page</button>
+      <button id="scrape">Scrape this page</button>
       <button id="open-graph">Open graph</button>
-      <button id="export" disabled>Export JSON</button>
+      <button id="export">Export JSON</button>
     </section>
 
-    <p class="hint">Scaffold only — scraping, storage, and export arrive in Phase 1.</p>
+    <p class="status" id="status" role="status"></p>
+    <p class="hint">
+      LinkedIn: open <b>My Network → Connections</b>, then Scrape.
+    </p>
 
-    <script src="popup.js"></script>
+    <script type="module" src="popup.js"></script>
   </body>
 </html>
